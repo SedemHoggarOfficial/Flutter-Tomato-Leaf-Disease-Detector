@@ -6,6 +6,7 @@ import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
 import 'package:flutter_tomato_leaf_disease_detector/models/prediction_result.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/app_button.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/result_card.dart';
+import 'package:flutter_tomato_leaf_disease_detector/widgets/theme_toggle.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// Premium result screen with hero animation and detailed disease info
@@ -98,40 +99,8 @@ class _ResultScreenState extends State<ResultScreen>
               ),
             ),
             actions: [
-              GestureDetector(
-                onTap: () => widget.themeNotifier.toggleTheme(),
-                child: Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? theme.colorScheme.primary
-                        : Colors.black.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(AppConstants.radius2xl),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      FaIcon(
-                        isDark ? FontAwesomeIcons.moon : FontAwesomeIcons.sun,
-                        size: 14,
-                        color: isDark ? Colors.black : Colors.white,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        isDark ? 'Dark' : 'Light',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: isDark ? Colors.black : Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ThemeToggle(themeNotifier: widget.themeNotifier),
+              const SizedBox(width: 16),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
