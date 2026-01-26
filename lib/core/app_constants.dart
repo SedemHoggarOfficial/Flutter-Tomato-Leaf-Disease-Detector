@@ -189,4 +189,13 @@ class AppConstants {
 
   /// Splash screen duration (6 seconds)
   static const Duration splashDuration = Duration(seconds: 6);
+
+  /// Splash scan animation duration
+  static const Duration splashScanDuration = Duration(milliseconds: 2000);
+
+  /// Splash flow animation duration
+  static const Duration splashFlowDuration = Duration(milliseconds: 1500);
+
+  /// Splash leaf appearance duration
+  static const Duration splashLeafDuration = Duration(milliseconds: 800);
 }

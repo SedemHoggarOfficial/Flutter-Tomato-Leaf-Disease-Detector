@@ -104,6 +104,7 @@ class AppTheme {
       onPrimary: Colors.white,
       onSecondary: AppColors.textPrimaryLight,
       onSurface: AppColors.textPrimaryLight,
+      surfaceDim: AppColors.textSecondaryDark,
       onError: Colors.white,
     ),
     scaffoldBackgroundColor: AppColors.surfaceLight,

@@ -4,6 +4,7 @@ import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
 import 'package:flutter_tomato_leaf_disease_detector/screens/scanner_screen.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/app_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Professional welcome screen with clean white background
 class WelcomeScreen extends StatefulWidget {
@@ -15,11 +16,14 @@ class WelcomeScreen extends StatefulWidget {
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
+class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  late Animation<double> _scaleAnimation;
+
+  bool startPulse = false;
+  bool animate = true;
 
   @override
   void initState() {
@@ -36,15 +40,34 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       ),
     );
 
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: const Interval(0.0, 1.0, curve: Curves.easeOutCubic),
-          ),
-        );
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 1.0, curve: Curves.easeOutCubic),
+      ),
+    );
 
-    _controller.forward();
+    _scaleAnimation = Tween(begin: 0.2, end: 1.1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _controller.forward().whenComplete((){
+      startPulse = true;
+      _controller.dispose();
+
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 1),
+      );
+
+      _scaleAnimation = Tween(begin: 0.97, end: 1.1).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      );
+
+      _controller.repeat(reverse: true);
+      setState(() {});
+
+    });
   }
 
   @override
@@ -119,7 +142,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
                       const Spacer(),
 
-                      // Hero Section
                       Center(
                         child: Container(
                           padding: const EdgeInsets.all(32),
@@ -129,23 +151,81 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: FaIcon(
-                            FontAwesomeIcons.leaf,
-                            size: 64,
-                            color: theme.colorScheme.primary,
+                          child: ScaleTransition(
+                            scale: _scaleAnimation,
+                            child: Image.asset(
+                              'assets/icon/intelligence.png',
+                              width: 64,
+                              height: 64,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
 
+                      // Hero Section
+                      // Center(
+                      //   child: Container(
+                      //     padding: const EdgeInsets.all(32),
+                      //     decoration: BoxDecoration(
+                      //       color: theme.colorScheme.primary.withValues(
+                      //         alpha: 0.1,
+                      //       ),
+                      //       shape: BoxShape.circle,
+                      //     ),
+                      //     child: TweenAnimationBuilder<double>(  
+                      //       key: ValueKey(animate),               
+                      //       tween: Tween(begin: 0.2, end: 1.1), 
+                      //       duration: const Duration(seconds: 1, milliseconds: 500),
+                      //       curve: Curves.easeOutCubic,
+                      //       builder: (context, value, child) { 
+                      //         return Transform.scale(
+                      //           scale: value,
+                      //           child: child,
+                      //         );
+                      //       },
+                      //       child: Image.asset(
+                      //         'assets/icon/intelligence.png',
+                      //         width: 64,
+                      //         height: 64,
+                      //         fit: BoxFit.contain,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
                       const SizedBox(height: 40),
+
+                      // ElevatedButton(
+                      //   onPressed: (){
+                      //     setState(() {
+                      //       animate = !animate;
+                      //     });
+                      //   }, 
+                      //   child: const Text("Replay"),
+                      // ),
 
                       // Title
                       Text(
-                        'Plant Disease\nDetector',
+                        'Leaf Guard',
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.displayMedium?.copyWith(
+                        style: GoogleFonts.montserrat(
+                          fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
+                          color: theme.colorScheme.primary,
+                          letterSpacing: 1.2,
+                          height: 1.2,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Tomato Leaf Plant Disease Detector',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.6,
+                          ),
                           height: 1.2,
                         ),
                       ),
