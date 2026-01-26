@@ -160,6 +160,8 @@ class AppConstants {
   /// Standard button height
   static const double buttonHeight = 52;
   static const double buttonMediumHeight = 42;
+  static const double buttonSmallHeight = 33;
+
 
   /// Loading indicator size inside buttons
   static const double loaderSize = 22;

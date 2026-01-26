@@ -8,6 +8,7 @@ class DiseaseInfo {
   final List<String> causes;
   final List<String> solutions;
   final Color backgroundColor;
+  final bool isHealthy;
 
   const DiseaseInfo({
     required this.name,
@@ -15,6 +16,7 @@ class DiseaseInfo {
     required this.causes,
     required this.solutions,
     this.backgroundColor = AppColors.cardLight,
+    this.isHealthy = false,
   });
 
   static DiseaseInfo? getInfo(String label) {
@@ -39,6 +41,7 @@ class DiseaseInfo {
         'Ensure adequate sunlight exposure',
         'Keep garden clean and weed-free',
       ],
+      isHealthy: true,
     ),
     'bacterial_spot': DiseaseInfo(
       name: 'Bacterial Spot',

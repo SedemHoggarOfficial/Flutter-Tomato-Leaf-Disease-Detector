@@ -10,6 +10,7 @@ class AppButton extends StatelessWidget {
   final bool isPrimary;
   final bool isTonal;
   final bool isMedium;
+  final bool isSmall;
   final bool isLoading;
 
   const AppButton({
@@ -20,6 +21,7 @@ class AppButton extends StatelessWidget {
     this.isPrimary = true,
     this.isTonal = false,
     this.isMedium = false,
+    this.isSmall = false,
     this.isLoading = false,
   });
 
@@ -30,28 +32,36 @@ class AppButton extends StatelessWidget {
     if (isPrimary) {
       return SizedBox(
         width: double.infinity,
-        height: AppConstants.buttonHeight,
+        height: isMedium ? AppConstants.buttonMediumHeight : isSmall ? AppConstants.buttonSmallHeight : AppConstants.buttonHeight,
         child: ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           child: isLoading
-              ? SizedBox(
-                  width: AppConstants.loaderSize,
-                  height: AppConstants.loaderSize,
-                  child: CircularProgressIndicator(
-                    strokeWidth: AppConstants.loaderStrokeWidth,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null) ...[
-                      FaIcon(icon, size: 18),
-                      const SizedBox(width: 10),
-                    ],
-                    Text(text),
-                  ],
+            ? SizedBox(
+                width: AppConstants.loaderSize,
+                height: AppConstants.loaderSize,
+                child: CircularProgressIndicator(
+                  strokeWidth: AppConstants.loaderStrokeWidth,
+                  color: theme.colorScheme.onPrimary,
                 ),
+              )
+            : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (icon != null) ...[
+                  FaIcon(icon, size: 18),
+                  const SizedBox(width: 10),
+                ],
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  // style: theme.textTheme.labelSmall?.copyWith(
+                  //   // color: isDark ? Colors.white70 : Colors.grey[600],
+                  //   height: 1.5,
+                  // ),
+                ),
+              ],
+            ),
         ),
       );
     }
@@ -60,7 +70,7 @@ class AppButton extends StatelessWidget {
       final isDark = theme.brightness == Brightness.dark;
       return SizedBox(
         width: double.infinity,
-        height: isMedium ? AppConstants.buttonMediumHeight : AppConstants.buttonHeight,
+        height: isMedium ? AppConstants.buttonMediumHeight : isSmall ? AppConstants.buttonSmallHeight : AppConstants.buttonHeight,
         child: FilledButton.tonal(
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
@@ -87,7 +97,14 @@ class AppButton extends StatelessWidget {
                       FaIcon(icon, size: 18),
                       const SizedBox(width: 10),
                     ],
-                    Text(text),
+                    Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      // style: theme.textTheme.labelSmall?.copyWith(
+                      //   // color: isDark ? Colors.white70 : Colors.grey[600],
+                      //   height: 1.5,
+                      // ),
+                    ),
                   ],
                 ),
         ),

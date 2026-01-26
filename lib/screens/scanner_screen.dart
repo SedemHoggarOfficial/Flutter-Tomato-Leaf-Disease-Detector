@@ -252,7 +252,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
-                          vertical: 18,
+                          vertical: 10,
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primary.withValues(
@@ -266,15 +266,18 @@ class _ScannerScreenState extends State<ScannerScreen>
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FaIcon(
-                              FontAwesomeIcons.robot,
-                              size: 14,
+                            Image.asset(
+                              "assets/icon/icon.png",
                               color: theme.colorScheme.primary,
+                              width: 32,
+                              colorBlendMode: BlendMode.srcIn,
+                              fit: BoxFit.contain,
+                              // scale: 2,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               'AI POWERED',
-                              style: theme.textTheme.labelSmall?.copyWith(
+                              style: theme.textTheme.labelLarge?.copyWith(
                                 color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1.2,
@@ -861,7 +864,7 @@ class _ScannerScreenState extends State<ScannerScreen>
 
   Widget _buildSupportedDiseases(BuildContext context) {
     // Use actual disease data
-    final diseases = DiseaseInfo.allDiseases.map((d) => d.name).toList();
+    final diseases = DiseaseInfo.allDiseases.toList();
 
     final theme = Theme.of(context);
 
@@ -901,17 +904,17 @@ class _ScannerScreenState extends State<ScannerScreen>
             //  borderRadius: BorderRadius.circular(AppConstants.radiusSm),
           ),
           child: SizedBox(
-            height: 110,
+            height: 160,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: diseases.length,
               separatorBuilder: (_, _) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
                 return Container(
-                  width: 150,
+                  width: 170,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: theme.cardTheme.color,
+                    color: theme.cardTheme.color,// diseases[index].isHealthy ? theme.primaryColor.withValues(alpha: 0.06) : theme.colorScheme.error.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(AppConstants.radius3xl),
                     border: Border.all(
                       color: theme.colorScheme.surfaceContainerHighest
@@ -922,7 +925,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -934,17 +937,19 @@ class _ScannerScreenState extends State<ScannerScreen>
                           ),
                           shape: BoxShape.circle,
                         ),
-                        child: FaIcon(
-                          FontAwesomeIcons.plantWilt,
-                          size: 18,
-                          color: theme.colorScheme.primary,
+                        child: Image.asset(
+                          !diseases[index].isHealthy ? 'assets/icon/virus.png' : 'assets/icon/plant (1).png',
+                          width: 40,
+                          // color: !diseases[index].isHealthy ? Colors.red : null,
+                          colorBlendMode: BlendMode.srcIn,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        diseases[index],
+                        diseases[index].name,
                         textAlign: TextAlign.center,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.labelSmall?.copyWith(
                           fontSize: 11,
@@ -952,6 +957,33 @@ class _ScannerScreenState extends State<ScannerScreen>
                           height: 1.2,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        height: AppConstants.buttonSmallHeight,
+                        child: TextButton(
+                          onPressed: (){},
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: theme.colorScheme.primary.withValues(alpha: .9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppConstants.radiusLg)
+                            ),
+                            minimumSize: Size.zero
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              "Read More",
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.onPrimary,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 );
