@@ -153,59 +153,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                           ),
                           child: ScaleTransition(
                             scale: _scaleAnimation,
-                            child: Image.asset(
-                              'assets/icon/intelligence.png',
-                              width: 64,
-                              height: 64,
-                              fit: BoxFit.contain,
+                            child: Opacity(
+                              opacity: isDark ? 0.75 : 0.9,
+                              child: Image.asset(
+                                'assets/icon/intelligence.png',
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
                       ),
-
-                      // Hero Section
-                      // Center(
-                      //   child: Container(
-                      //     padding: const EdgeInsets.all(32),
-                      //     decoration: BoxDecoration(
-                      //       color: theme.colorScheme.primary.withValues(
-                      //         alpha: 0.1,
-                      //       ),
-                      //       shape: BoxShape.circle,
-                      //     ),
-                      //     child: TweenAnimationBuilder<double>(  
-                      //       key: ValueKey(animate),               
-                      //       tween: Tween(begin: 0.2, end: 1.1), 
-                      //       duration: const Duration(seconds: 1, milliseconds: 500),
-                      //       curve: Curves.easeOutCubic,
-                      //       builder: (context, value, child) { 
-                      //         return Transform.scale(
-                      //           scale: value,
-                      //           child: child,
-                      //         );
-                      //       },
-                      //       child: Image.asset(
-                      //         'assets/icon/intelligence.png',
-                      //         width: 64,
-                      //         height: 64,
-                      //         fit: BoxFit.contain,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-
                       const SizedBox(height: 40),
-
-                      // ElevatedButton(
-                      //   onPressed: (){
-                      //     setState(() {
-                      //       animate = !animate;
-                      //     });
-                      //   }, 
-                      //   child: const Text("Replay"),
-                      // ),
-
-                      // Title
                       Text(
                         'Leaf Guard',
                         textAlign: TextAlign.center,

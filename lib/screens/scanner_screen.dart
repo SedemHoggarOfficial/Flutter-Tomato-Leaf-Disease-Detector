@@ -36,6 +36,8 @@ class _ScannerScreenState extends State<ScannerScreen>
   bool _isModelLoaded = false;
   bool _isAnalyzing = false;
 
+  bool _up = true;
+
   // Persistent result (for this session)
   PredictionResult? _lastResult;
   File? _lastImage;
@@ -322,8 +324,9 @@ class _ScannerScreenState extends State<ScannerScreen>
                             AppConstants.radiusLg,
                           ),
                         ),
-                        child: Row(
+                        child: Column(
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               'Scroll to Scan',
@@ -332,12 +335,26 @@ class _ScannerScreenState extends State<ScannerScreen>
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            FaIcon(
-                              FontAwesomeIcons.chevronDown,
-                              size: 12,
-                              color: theme.colorScheme.primary,
-                              weight: 12,
+                            const SizedBox(height: 8),
+                            TweenAnimationBuilder<double>(
+                              tween: Tween(begin: 0, end: _up ? -5 : 0),
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut,
+                              onEnd: () {
+                                setState(() => _up = !_up);
+                              },
+                              builder: (context, value, child){
+                                return Transform.translate(
+                                  offset: Offset(0, value),
+                                  child: child, 
+                                );
+                              },
+                              child: FaIcon(
+                                FontAwesomeIcons.chevronDown,
+                                size: 12,
+                                color: theme.textTheme.bodySmall?.color,
+                                weight: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -867,6 +884,7 @@ class _ScannerScreenState extends State<ScannerScreen>
     final diseases = DiseaseInfo.allDiseases.toList();
 
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -937,12 +955,15 @@ class _ScannerScreenState extends State<ScannerScreen>
                           ),
                           shape: BoxShape.circle,
                         ),
-                        child: Image.asset(
-                          !diseases[index].isHealthy ? 'assets/icon/virus.png' : 'assets/icon/plant (1).png',
-                          width: 40,
-                          // color: !diseases[index].isHealthy ? Colors.red : null,
-                          colorBlendMode: BlendMode.srcIn,
-                          fit: BoxFit.contain,
+                        child: Opacity(
+                          opacity: isDark ? 0.7 : 0.9,
+                          child: Image.asset(
+                            !diseases[index].isHealthy ? 'assets/icon/virus.png' : 'assets/icon/plant (1).png',
+                            width: 40,
+                            // color: !diseases[index].isHealthy ? Colors.red : null,
+                            colorBlendMode: BlendMode.srcIn,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),

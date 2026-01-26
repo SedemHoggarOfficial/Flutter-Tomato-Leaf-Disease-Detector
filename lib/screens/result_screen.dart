@@ -169,9 +169,7 @@ class _ResultScreenState extends State<ResultScreen>
                           ),
                           decoration: BoxDecoration(
                             color: isHealthy
-                                ?  theme.colorScheme.primary.withValues(
-                                    alpha: 0.9,
-                                  )
+                                ? isDark ? theme.colorScheme.onPrimary.withValues(alpha: 0.9) : theme.colorScheme.primary.withValues(alpha: 0.9)
                                 : widget.result.isUncertain
                                 ? Colors.grey.withValues(alpha: 0.9)
                                 : Colors.red.withValues(alpha: 0.9),
