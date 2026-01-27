@@ -26,7 +26,7 @@ class _ThemeToggleState extends State<ThemeToggle> {
             vertical: AppConstants.spacingSm,
           ),
           decoration: BoxDecoration(
-            color: isDark ? theme.colorScheme.primary : theme.colorScheme.primary,
+            color: theme.colorScheme.primary.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(
               AppConstants.radiusThemeToggle,
             ),

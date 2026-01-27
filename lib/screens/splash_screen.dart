@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_constants.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
 import 'package:flutter_tomato_leaf_disease_detector/screens/welcome_screen.dart';
@@ -155,72 +156,81 @@ class _SplashScreenState extends State<SplashScreen>
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // 1. Flow Lines
-          AnimatedBuilder(
-            animation: _flowController,
-            builder: (context, child) {
-              return CustomPaint(
-                painter: EnergyFlowPainter(
-                  animationValue: _flowController.value,
-                  color: const Color(0xFF00E5FF), // Cyan "current" color
-                  leafCount: 6,
-                  radius: 140,
-                ),
-                size: Size.infinite,
-              );
-            },
-          ),
-
-          // 2. Surrounding Leaves
-          AnimatedBuilder(
-            animation: Listenable.merge([
-              _mainController,
-              _pulseController,
-              _vibrationController,
-            ]),
-            builder: (context, child) {
-              return Stack(
-                children: List.generate(6, (index) {
-                  return _buildLeaf(index, 6, 140, theme);
-                }),
-              );
-            },
-          ),
-
-          // 3. Central Icon
-          Center(
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: theme.scaffoldBackgroundColor,
-                    shape: BoxShape.circle,
-                    boxShadow: AppConstants.heroShadow(theme.shadowColor),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: theme.scaffoldBackgroundColor,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        ),
+        sized: false,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // 1. Flow Lines
+            AnimatedBuilder(
+              animation: _flowController,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: EnergyFlowPainter(
+                    animationValue: _flowController.value,
+                    color: const Color(0xFF00E5FF), // Cyan "current" color
+                    leafCount: 6,
+                    radius: 140,
                   ),
-                  padding: const EdgeInsets.all(AppConstants.spacingLg),
-                  child: Image.asset(
-                    'assets/icon/intelligence.png',
-                    fit: BoxFit.contain,
+                  size: Size.infinite,
+                );
+              },
+            ),
+        
+            // 2. Surrounding Leaves
+            AnimatedBuilder(
+              animation: Listenable.merge([
+                _mainController,
+                _pulseController,
+                _vibrationController,
+              ]),
+              builder: (context, child) {
+                return Stack(
+                  children: List.generate(6, (index) {
+                    return _buildLeaf(index, 6, 140, theme);
+                  }),
+                );
+              },
+            ),
+        
+            // 3. Central Icon
+            Center(
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: theme.scaffoldBackgroundColor,
+                      shape: BoxShape.circle,
+                      boxShadow: AppConstants.heroShadow(theme.shadowColor),
+                    ),
+                    padding: const EdgeInsets.all(AppConstants.spacingLg),
+                    child: Image.asset(
+                      'assets/icon/intelligence.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-
-          // 4. Scanner Movable Overlay
-          // [Scanner code remains same]
-          _buildScanner(theme, 140),
-
-          // 5. Text Titles
-          _buildText(theme),
-        ],
+        
+            // 4. Scanner Movable Overlay
+            // [Scanner code remains same]
+            _buildScanner(theme, 140),
+        
+            // 5. Text Titles
+            _buildText(theme),
+          ],
+        ),
       ),
     );
   }

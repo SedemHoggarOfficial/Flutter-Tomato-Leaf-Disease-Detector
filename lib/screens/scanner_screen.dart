@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_colors.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_constants.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
@@ -149,188 +150,197 @@ class _ScannerScreenState extends State<ScannerScreen>
 
     return Scaffold(
       appBar: CustomAppBar(themeNotifier: widget.themeNotifier, title: 'Leaf Guard'),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 10, 24, 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Header Container
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 24,
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isDark ? theme.cardTheme.color : Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.radiusCard,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: theme.scaffoldBackgroundColor,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        ),
+        sized: false,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 10, 24, 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Header Container
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 16,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 24,
-                        offset: const Offset(0, 8),
+                    decoration: BoxDecoration(
+                      color: isDark ? theme.cardTheme.color : Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        AppConstants.radiusCard,
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.03),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
                         ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withValues(
-                            alpha: 0.1,
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
                           ),
-                          borderRadius: BorderRadius.circular(
-                            AppConstants.radiusLg,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/icon/icon.png",
-                              color: theme.colorScheme.primary,
-                              width: 32,
-                              colorBlendMode: BlendMode.srcIn,
-                              fit: BoxFit.contain,
-                              // scale: 2,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.1,
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'AI POWERED',
-                              style: theme.textTheme.labelLarge?.copyWith(
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.radiusLg,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icon/icon.png",
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.2,
+                                width: 32,
+                                colorBlendMode: BlendMode.srcIn,
+                                fit: BoxFit.contain,
+                                // scale: 2,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'AI Diagnosis',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: theme.colorScheme.onSurface,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Analyze your crops instantly for\naccurate disease detection',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.textTheme.bodyMedium?.color?.withValues(
-                            alpha: 0.6,
-                          ),
-                          height: 1.5,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Scroll Indicator
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: theme.dividerColor.withValues(alpha: 0.5)),
-                          borderRadius: BorderRadius.circular(
-                            AppConstants.radiusLg,
+                              const SizedBox(width: 8),
+                              Text(
+                                'AI POWERED',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Scroll to Scan',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                color: theme.textTheme.bodySmall?.color,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            TweenAnimationBuilder<double>(
-                              tween: Tween(begin: 0, end: _up ? -5 : 0),
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.easeInOut,
-                              onEnd: () {
-                                setState(() => _up = !_up);
-                              },
-                              builder: (context, value, child) {
-                                return Transform.translate(
-                                  offset: Offset(0, value),
-                                  child: child,
-                                );
-                              },
-                              child: FaIcon(
-                                FontAwesomeIcons.chevronDown,
-                                size: 12,
-                                color: theme.textTheme.bodySmall?.color,
-                                weight: 12,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 16),
+                        Text(
+                          'AI Diagnosis',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.onSurface,
+                            letterSpacing: -0.5,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 8),
+                        Text(
+                          'Analyze your crops instantly for\naccurate disease detection',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.textTheme.bodyMedium?.color?.withValues(
+                              alpha: 0.6,
+                            ),
+                            height: 1.5,
+                          ),
+                        ),
+        
+                        const SizedBox(height: 24),
+        
+                        // Scroll Indicator
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: theme.dividerColor.withValues(alpha: 0.5)),
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.radiusLg,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Scroll to Scan',
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: theme.textTheme.bodySmall?.color,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              TweenAnimationBuilder<double>(
+                                tween: Tween(begin: 0, end: _up ? -5 : 0),
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut,
+                                onEnd: () {
+                                  setState(() => _up = !_up);
+                                },
+                                builder: (context, value, child) {
+                                  return Transform.translate(
+                                    offset: Offset(0, value),
+                                    child: child,
+                                  );
+                                },
+                                child: FaIcon(
+                                  FontAwesomeIcons.chevronDown,
+                                  size: 12,
+                                  color: theme.textTheme.bodySmall?.color,
+                                  weight: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Supported Diseases Section
-                _buildSupportedDiseases(context),
-
-                const SizedBox(height: 32),
-
-                // Detailed Guide Section
-                _buildDetailedGuide(context),
-
-                const SizedBox(height: 32),
-
-                // Last Result Section (if available)
-                if (_lastResult != null &&
-                    !_isAnalyzing &&
-                    _selectedImage == null) ...[
+        
+                  const SizedBox(height: 32),
+        
+                  // Supported Diseases Section
+                  _buildSupportedDiseases(context),
+        
+                  const SizedBox(height: 32),
+        
+                  // Detailed Guide Section
+                  _buildDetailedGuide(context),
+        
+                  const SizedBox(height: 32),
+        
+                  // Last Result Section (if available)
+                  if (_lastResult != null &&
+                      !_isAnalyzing &&
+                      _selectedImage == null) ...[
+                    Text(
+                      'Recent Activity',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildLastResultSection(context),
+                    const SizedBox(height: 32),
+                  ],
+        
+                  // Main Scanner Area (Inline Workflow)
                   Text(
-                    'Recent Activity',
+                    _isAnalyzing ? 'Analyzing Crop...' : 'Start Diagnosis',
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildLastResultSection(context),
-                  const SizedBox(height: 32),
+        
+                  // Switch between Empty, Preview, and Analyzing states
+                  _buildScannerArea(context),
                 ],
-
-                // Main Scanner Area (Inline Workflow)
-                Text(
-                  _isAnalyzing ? 'Analyzing Crop...' : 'Start Diagnosis',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white : Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Switch between Empty, Preview, and Analyzing states
-                _buildScannerArea(context),
-              ],
+              ),
             ),
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
+import 'package:flutter_tomato_leaf_disease_detector/widgets/app_back_button.dart.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/theme_toggle.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget{
   final ThemeNotifier themeNotifier;
@@ -28,51 +28,34 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    // final isDark = theme.brightness == Brightness.dark;
 
-    return AppBar(
-      title: widget.title != null ? Text(
-        widget.title!,
-        style: theme.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: theme.colorScheme.primary,
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        height: kToolbarHeight,
+        decoration: BoxDecoration(
+          color: Colors.transparent
         ),
-      ) : null,
-      centerTitle: true,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      leading: widget.hasBackButton ? Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: isDark ? theme.cardTheme.color : Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: Center(
-              child: FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                size: 16,
-                color: theme.iconTheme.color,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        // margin: EdgeInsets.only(bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.hasBackButton ? AppBackButton(themeNotifier: widget.themeNotifier) : SizedBox(width: 0),
+    
+            widget.title != null ? Text(
+              widget.title!,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
               ),
-            ),
-          ),
+            ) : SizedBox(width: 0),
+            ThemeToggle(themeNotifier: widget.themeNotifier),
+          ],
         ),
-      ) : null,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: ThemeToggle(themeNotifier: widget.themeNotifier),
-        ),
-      ],
+      ),
     );
   }
 }
