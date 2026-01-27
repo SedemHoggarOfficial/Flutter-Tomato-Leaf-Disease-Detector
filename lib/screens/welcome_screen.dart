@@ -154,7 +154,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                   Text(
                     'LEAF GUARD',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.bungee(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.primary,

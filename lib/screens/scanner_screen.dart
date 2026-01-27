@@ -9,7 +9,7 @@ import 'package:flutter_tomato_leaf_disease_detector/models/prediction_result.da
 import 'package:flutter_tomato_leaf_disease_detector/screens/result_screen.dart';
 import 'package:flutter_tomato_leaf_disease_detector/services/ml_service.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/app_button.dart';
-import 'package:flutter_tomato_leaf_disease_detector/widgets/theme_toggle.dart';
+import 'package:flutter_tomato_leaf_disease_detector/widgets/custom_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/processing_animation_widget.dart';
@@ -148,45 +148,7 @@ class _ScannerScreenState extends State<ScannerScreen>
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Leaf Guard',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: isDark ? theme.cardTheme.color : Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: Center(
-              child: FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                size: 16,
-                color: theme.iconTheme.color,
-              ),
-            ),
-          ),
-        ),
-        actions: [
-          ThemeToggle(themeNotifier: widget.themeNotifier),
-          const SizedBox(width: 24),
-        ],
-      ),
+      appBar: CustomAppBar(themeNotifier: widget.themeNotifier, title: 'Leaf Guard'),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
