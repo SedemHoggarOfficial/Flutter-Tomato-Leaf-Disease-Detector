@@ -88,6 +88,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isDark ? theme.cardTheme.color : Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+            child: Center(
+              child: FaIcon(
+                FontAwesomeIcons.chevronLeft,
+                size: 16,
+                color: theme.iconTheme.color,
+              ),
+            ),
+          ),
+        ),
         actions: [
           ThemeToggle(themeNotifier: widget.themeNotifier),
           const SizedBox(width: 24),
