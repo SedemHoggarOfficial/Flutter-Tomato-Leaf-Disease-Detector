@@ -308,10 +308,10 @@ class _ScannerScreenState extends State<ScannerScreen>
                               onEnd: () {
                                 setState(() => _up = !_up);
                               },
-                              builder: (context, value, child){
+                              builder: (context, value, child) {
                                 return Transform.translate(
                                   offset: Offset(0, value),
-                                  child: child, 
+                                  child: child,
                                 );
                               },
                               child: FaIcon(
@@ -897,7 +897,9 @@ class _ScannerScreenState extends State<ScannerScreen>
                   width: 170,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: theme.cardTheme.color,// diseases[index].isHealthy ? theme.primaryColor.withValues(alpha: 0.06) : theme.colorScheme.error.withValues(alpha: 0.06),
+                    color: theme
+                        .cardTheme
+                        .color, // diseases[index].isHealthy ? theme.primaryColor.withValues(alpha: 0.06) : theme.colorScheme.error.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(AppConstants.radius3xl),
                     border: Border.all(
                       color: theme.colorScheme.surfaceContainerHighest
@@ -923,7 +925,9 @@ class _ScannerScreenState extends State<ScannerScreen>
                         child: Opacity(
                           opacity: isDark ? 0.7 : 0.9,
                           child: Image.asset(
-                            !diseases[index].isHealthy ? 'assets/icon/virus.png' : 'assets/icon/plant (1).png',
+                            !diseases[index].isHealthy
+                                ? 'assets/icon/leaf-virus.png'
+                                : 'assets/icon/leaf-healthy.png',
                             width: 40,
                             // color: !diseases[index].isHealthy ? Colors.red : null,
                             colorBlendMode: BlendMode.srcIn,
@@ -948,14 +952,18 @@ class _ScannerScreenState extends State<ScannerScreen>
                         width: double.infinity,
                         height: AppConstants.buttonSmallHeight,
                         child: TextButton(
-                          onPressed: (){},
+                          onPressed: () =>
+                              _showDiseaseDetails(context, diseases[index]),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
-                            backgroundColor: theme.colorScheme.primary.withValues(alpha: .9),
+                            backgroundColor: theme.colorScheme.primary
+                                .withValues(alpha: .9),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppConstants.radiusLg)
+                              borderRadius: BorderRadius.circular(
+                                AppConstants.radiusLg,
+                              ),
                             ),
-                            minimumSize: Size.zero
+                            minimumSize: Size.zero,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -969,7 +977,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 );
@@ -1117,6 +1125,328 @@ class _ScannerScreenState extends State<ScannerScreen>
           ),
         ),
       ],
+    );
+  }
+
+  void _showDiseaseDetails(BuildContext context, DiseaseInfo disease) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        final theme = Theme.of(context);
+        final isDark = theme.brightness == Brightness.dark;
+
+        IconData typeIcon;
+        Color typeColor;
+        String typeName;
+        String typeImage;
+
+        switch (disease.type) {
+          case DiseaseType.virus:
+            typeIcon = FontAwesomeIcons.virus;
+            typeColor = DiseaseType.virus.typeColor;
+            typeName = DiseaseType.virus.typeName;
+            typeImage = DiseaseType.virus.iconPath;
+            break;
+          case DiseaseType.bacteria:
+            typeIcon = FontAwesomeIcons.bacterium;
+            typeColor = DiseaseType.bacteria.typeColor;
+            typeName = DiseaseType.bacteria.typeName;
+            typeImage = DiseaseType.bacteria.iconPath;
+            break;
+          case DiseaseType.fungus:
+            typeIcon = FontAwesomeIcons.spaghettiMonsterFlying;
+            typeIcon = FontAwesomeIcons.circleNodes;
+            typeColor = DiseaseType.fungus.typeColor;
+            typeName = DiseaseType.fungus.typeName;
+            typeImage = DiseaseType.fungus.iconPath;
+            break;
+          case DiseaseType.pest:
+            typeIcon = FontAwesomeIcons.spider;
+            typeColor = DiseaseType.pest.typeColor;
+            typeName = DiseaseType.pest.typeName;
+            typeImage = DiseaseType.pest.iconPath;
+            break;
+          case DiseaseType.healthy:
+            typeIcon = FontAwesomeIcons.heart;
+            typeColor = DiseaseType.healthy.typeColor;
+            typeName = DiseaseType.healthy.typeName;
+            typeImage = DiseaseType.healthy.iconPath;
+            break;
+          default:
+            typeIcon = FontAwesomeIcons.circleQuestion;
+            typeColor = DiseaseType.other.typeColor;
+            typeName = DiseaseType.other.typeName;
+            typeImage = DiseaseType.other.iconPath;
+        }
+
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            children: [
+              // Handle
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(top: 12, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+
+              // Header Image/Icon
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: typeColor.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              typeImage,
+                              width: 42,
+                            ),
+                            // child: FaIcon(typeIcon, size: 32, color: typeColor),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: Text(
+                          disease.name,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: typeColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: typeColor.withValues(alpha: 0.2),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              FaIcon(typeIcon, size: 12, color: typeColor),
+                              const SizedBox(width: 8),
+                              Text(
+                                typeName,
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: typeColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // About Section with Background
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.grey[900] : Colors.grey[50],
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isDark
+                                ? Colors.grey[800]!
+                                : Colors.grey[200]!,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.circleInfo,
+                                    size: 14,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'About',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              disease.description,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: isDark
+                                    ? Colors.grey[300]
+                                    : Colors.grey[700],
+                                height: 1.6,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Common Causes Section with Background
+                      if (disease.causes.isNotEmpty)
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: isDark ? Colors.grey[900] : Colors.grey[50],
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: isDark
+                                  ? Colors.grey[800]!
+                                  : Colors.grey[200]!,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: typeColor.withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: FaIcon(
+                                      (disease.type == DiseaseType.healthy) ? FontAwesomeIcons.marker : FontAwesomeIcons.triangleExclamation,
+                                      size: 14,
+                                      color: typeColor,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    (disease.type == DiseaseType.healthy) ? 'Helpful Recommendations' : 'Common Causes',
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              ...disease.causes.asMap().entries.map(
+                                (entry) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: typeColor.withValues(
+                                            alpha: 0.1,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                          border: Border.all(
+                                            color: typeColor.withValues(
+                                              alpha: 0.3,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${entry.key + 1}',
+                                          style: theme.textTheme.labelSmall
+                                              ?.copyWith(
+                                                color: typeColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 3,
+                                          ),
+                                          child: Text(
+                                            entry.value,
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                                  color: isDark
+                                                      ? Colors.grey[300]
+                                                      : Colors.grey[700],
+                                                  height: 1.4,
+                                                  fontWeight: FontWeight.w500
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Bottom Action Button
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: AppButton(
+                  text: 'Close',
+                  onPressed: () => Navigator.pop(context),
+                  isPrimary: false,
+                  isTonal: true,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

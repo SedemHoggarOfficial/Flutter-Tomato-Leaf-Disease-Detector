@@ -39,3 +39,6 @@ flutter:
   assets:
     - assets/
     - assets/icon/
+    - assets/icon/diseases/
+    - assets/screenshots/
+    - assets/fonts/

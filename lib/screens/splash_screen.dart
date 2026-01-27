@@ -25,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _flowController;
   late AnimationController _pulseController;
   late AnimationController _vibrationController;
-  late AnimationController _rippleController; // New: For alert ripples
+
+  // in the bottom sheet, make the about more detailed. and the common causes, make the bullet points more like numbered with squares around them. make each section have a background. keep everything professional
 
   // Animations
   late Animation<double> _fadeAnimation;
@@ -35,14 +36,13 @@ class _SplashScreenState extends State<SplashScreen>
   // Configuration
   final int _sickLeafIndex = 2;
   final List<int> _scanPathIndices = [0, 4, 2];
-  final List<Particle> _particles = []; // Ambient particles
 
   @override
   void initState() {
     super.initState();
     _initControllers();
     _initAnimations();
-    _initParticles();
+
     _startSequence();
   }
 
@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _flowController = AnimationController(
       vsync: this,
-      duration: AppConstants.splashFlowDuration,
+      duration: const Duration(milliseconds: 1500),
     );
 
     _pulseController = AnimationController(
@@ -70,11 +70,6 @@ class _SplashScreenState extends State<SplashScreen>
     _vibrationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
-    );
-
-    _rippleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
     );
   }
 
@@ -94,21 +89,6 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  void _initParticles() {
-    final random = math.Random();
-    for (int i = 0; i < 20; i++) {
-      _particles.add(
-        Particle(
-          x: random.nextDouble(),
-          y: random.nextDouble(),
-          size: random.nextDouble() * 3 + 1,
-          speed: random.nextDouble() * 0.2 + 0.1,
-          theta: random.nextDouble() * 2 * math.pi,
-        ),
-      );
-    }
-  }
-
   Offset _getLeafOffset(int index, double radius) {
     final angle = (index * 2 * math.pi) / 6;
     return Offset(radius * math.cos(angle), radius * math.sin(angle));
@@ -126,10 +106,8 @@ class _SplashScreenState extends State<SplashScreen>
 
         // Disease Detected!
         _vibrationController.repeat(reverse: true);
-        _rippleController.repeat(); // Start Ripples
 
         Future.delayed(const Duration(milliseconds: 2000), () {
-          // Slightly longer wait to see ripples
           _navigateAway();
         });
       });
@@ -142,7 +120,6 @@ class _SplashScreenState extends State<SplashScreen>
       _flowController.stop();
       _pulseController.stop();
       _vibrationController.stop();
-      _rippleController.stop();
 
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
@@ -164,7 +141,7 @@ class _SplashScreenState extends State<SplashScreen>
     _flowController.dispose();
     _pulseController.dispose();
     _vibrationController.dispose();
-    _rippleController.dispose();
+
     super.dispose();
   }
 
@@ -181,21 +158,6 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 0. Ambient Particles
-          AnimatedBuilder(
-            animation: _flowController, // Recycle flow controller for particles
-            builder: (context, child) {
-              return CustomPaint(
-                painter: ParticlePainter(
-                  particles: _particles,
-                  animationValue: _flowController.value,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                ),
-                size: Size.infinite,
-              );
-            },
-          ),
-
           // 1. Flow Lines
           AnimatedBuilder(
             animation: _flowController,
@@ -203,33 +165,9 @@ class _SplashScreenState extends State<SplashScreen>
               return CustomPaint(
                 painter: EnergyFlowPainter(
                   animationValue: _flowController.value,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: const Color(0xFF00E5FF), // Cyan "current" color
                   leafCount: 6,
                   radius: 140,
-                ),
-                size: Size.infinite,
-              );
-            },
-          ),
-
-          // 1.5 Alert Ripples (Only appearing behind leaves)
-          AnimatedBuilder(
-            animation: _rippleController,
-            builder: (context, child) {
-              if (!_rippleController.isAnimating) {
-                return const SizedBox.shrink();
-              }
-
-              final center = MediaQuery.of(context).size.center(Offset.zero);
-              final sickLeafOffset = _getLeafOffset(_sickLeafIndex, 140);
-              // Draw ripples at the sick leaf position
-              // Note: Painter coordinates are local, so we need to center properly
-
-              return CustomPaint(
-                painter: RipplePainter(
-                  animationValue: _rippleController.value,
-                  color: Colors.redAccent.withValues(alpha: 0.3),
-                  origin: sickLeafOffset + center,
                 ),
                 size: Size.infinite,
               );
@@ -313,7 +251,7 @@ class _SplashScreenState extends State<SplashScreen>
 
         return Center(
           child: Transform.translate(
-            offset: BufferOffset(scannerPos, -40),
+            offset: scannerPos,
             child: Transform.rotate(
               angle: -math.pi / 4,
               child: Icon(
@@ -353,24 +291,15 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  Offset BufferOffset(Offset original, double dy) {
-    return Offset(original.dx, original.dy + dy);
-  }
-
   Widget _buildLeaf(int index, int total, double radius, ThemeData theme) {
     final angle = (index * 2 * math.pi) / total;
-    final isBig = index % 2 == 0;
     final isSick = index == _sickLeafIndex;
-    final baseSize = isBig ? 32.0 : 20.0;
 
     final animValue = _pulseController.value;
-    final scaleFactor = isBig
-        ? lerpDouble(0.8, 1.2, animValue)!
-        : lerpDouble(1.2, 0.8, animValue)!;
+    final scaleFactor = lerpDouble(0.9, 1.1, animValue)!;
 
-    final leafColor = isSick
-        ? const Color(0xFF8D6E63)
-        : theme.colorScheme.primary.withValues(alpha: 0.7);
+    // Unified color or just use image
+    // final leafColor = theme.colorScheme.primary.withOpacity(0.7);
 
     double vibrationX = 0;
     if (isSick && _vibrationController.isAnimating) {
@@ -389,10 +318,13 @@ class _SplashScreenState extends State<SplashScreen>
             scale: scaleFactor,
             child: Transform.rotate(
               angle: angle + math.pi / 2,
-              child: FaIcon(
-                FontAwesomeIcons.leaf,
-                size: baseSize,
-                color: leafColor,
+              child: Image.asset(
+                isSick
+                    ? 'assets/icon/leaf-virus.png'
+                    : 'assets/icon/leaf-healthy.png',
+                width: 35,
+                height: 35,
+                fit: BoxFit.contain,
               ),
             ),
           ),
@@ -400,98 +332,6 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
   }
-}
-
-class Particle {
-  double x; // 0-1
-  double y; // 0-1
-  double size;
-  double speed;
-  double theta;
-
-  Particle({
-    required this.x,
-    required this.y,
-    required this.size,
-    required this.speed,
-    required this.theta,
-  });
-}
-
-class ParticlePainter extends CustomPainter {
-  final List<Particle> particles;
-  final double animationValue;
-  final Color color;
-
-  ParticlePainter({
-    required this.particles,
-    required this.animationValue,
-    required this.color,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-
-    for (var p in particles) {
-      // Simple movement logic based on animationValue loop
-      // We want continuous movement.
-      // In a real game loop we'd use dt, here we just offset by value.
-
-      // final dx = math.cos(p.theta) * p.speed * 0.005;
-      // final dy = math.sin(p.theta) * p.speed * 0.005;
-
-      // Update position (in a stateless painter this is tricky,
-      // but we can compute position based on time if we passed real time.
-      // For now, let's just draw static "floating" look by oscillating)
-
-      final offsetX =
-          size.width * p.x +
-          math.sin(animationValue * 2 * math.pi + p.theta) * 10;
-      final offsetY =
-          size.height * p.y +
-          math.cos(animationValue * 2 * math.pi + p.theta) * 10;
-
-      canvas.drawCircle(Offset(offsetX, offsetY), p.size, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant ParticlePainter oldDelegate) => true;
-}
-
-class RipplePainter extends CustomPainter {
-  final double animationValue;
-  final Color color;
-  final Offset origin;
-
-  RipplePainter({
-    required this.animationValue,
-    required this.color,
-    required this.origin,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    // Draw 3 ripples
-    for (int i = 0; i < 3; i++) {
-      final progress = (animationValue + i / 3) % 1.0;
-      final radius = progress * 60; // Max radius 60
-      final opacity = 1.0 - progress;
-
-      paint.color = color.withValues(alpha: opacity * 0.5);
-
-      canvas.drawCircle(origin, radius, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant RipplePainter oldDelegate) => true;
 }
 
 class EnergyFlowPainter extends CustomPainter {
@@ -510,12 +350,8 @@ class EnergyFlowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
+    
+    // Draw dashed lines and pulses
     for (int i = 0; i < leafCount; i++) {
       final angle = (i * 2 * math.pi) / leafCount;
       final endPoint = Offset(
@@ -523,37 +359,60 @@ class EnergyFlowPainter extends CustomPainter {
         center.dy + radius * math.sin(angle),
       );
 
+      // Draw faint dashed line background
+      _drawDashedLine(canvas, center, endPoint, color.withOpacity(0.1), width: 1.0);
+
+      // Draw pulse as a DASHED segment
+      final dist = (endPoint - center).distance;
+      final packetSize = 50.0;
+      final progressIdx = (animationValue * (dist + packetSize)); // Allow it to flow fully out
+      
       final p1 = center;
       final p2 = endPoint;
-
-      final dist = (p2 - p1).distance;
-      final currentPos = animationValue * dist;
-      final tailLength = 40.0;
-
-      final startDist = math.max(0.0, currentPos - tailLength);
-      final endDist = currentPos;
-
-      if (startDist < dist) {
-        final segmentStart = Offset(
-          p1.dx + (p2.dx - p1.dx) * (startDist / dist),
-          p1.dy + (p2.dy - p1.dy) * (startDist / dist),
-        );
-
-        final effectiveEndDist = math.min(dist, endDist);
-        final segmentEnd = Offset(
-          p1.dx + (p2.dx - p1.dx) * (effectiveEndDist / dist),
-          p1.dy + (p2.dy - p1.dy) * (effectiveEndDist / dist),
-        );
-
-        paint.color = color.withValues(
-          alpha: 1.0 - (effectiveEndDist / dist) * 0.5,
-        );
-
-        canvas.drawLine(segmentStart, segmentEnd, paint);
+      
+      // Calculate start and end of the packet
+      final packetEnd = progressIdx;
+      final packetStart = packetEnd - packetSize;
+            
+      // We clip the segment to the line 0..dist
+      final validStart = math.max(0.0, packetStart);
+      final validEnd = math.min(dist, packetEnd);
+      
+      if (validStart < validEnd) {
+         final startOffset = _lerpOffset(p1, p2, validStart / dist);
+         final endOffset = _lerpOffset(p1, p2, validEnd / dist);
+         
+         // Draw the pulse using dashes too, but thicker/brighter
+         _drawDashedLine(canvas, startOffset, endOffset, color, width: 2.5);
       }
     }
   }
 
+  Offset _lerpOffset(Offset a, Offset b, double t) {
+    return Offset(a.dx + (b.dx - a.dx) * t, a.dy + (b.dy - a.dy) * t);
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Color color, {double width = 1.0}) {
+     final paint = Paint()
+      ..color = color
+      ..strokeWidth = width
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+      
+     final dist = (p2 - p1).distance;
+     final dashWidth = 6.0;
+     final dashSpace = 4.0;
+     double currentDist = 0.0;
+     
+     while (currentDist < dist) {
+       final start = _lerpOffset(p1, p2, currentDist / dist);
+       final endDist = math.min(dist, currentDist + dashWidth);
+       final end = _lerpOffset(p1, p2, endDist / dist);
+       
+       canvas.drawLine(start, end, paint);
+       currentDist += dashWidth + dashSpace;
+     }
+  }
   @override
   bool shouldRepaint(EnergyFlowPainter oldDelegate) {
     return oldDelegate.animationValue != animationValue;

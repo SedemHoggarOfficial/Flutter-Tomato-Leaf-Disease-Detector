@@ -152,13 +152,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                   ),
                   const SizedBox(height: 40),
                   Text(
-                    'Leaf Guard',
+                    'LEAF GUARD',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.bungee(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.primary,
-                      letterSpacing: 1.2,
+                      // letterSpacing: 1.2,
                       height: 1.2,
                     ),
                   ),
