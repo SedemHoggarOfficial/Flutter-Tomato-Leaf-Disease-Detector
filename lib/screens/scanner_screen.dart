@@ -152,6 +152,7 @@ class _ScannerScreenState extends State<ScannerScreen>
       appBar: CustomAppBar(themeNotifier: widget.themeNotifier, title: 'Leaf Guard'),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
+          systemStatusBarContrastEnforced: false,
           statusBarColor: theme.scaffoldBackgroundColor,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           systemNavigationBarColor: theme.scaffoldBackgroundColor,
@@ -895,10 +896,10 @@ class _ScannerScreenState extends State<ScannerScreen>
                           shape: BoxShape.circle,
                         ),
                         child: Opacity(
-                          opacity: isDark ? 0.7 : 0.9,
+                          opacity: isDark ? 0.7 : 1,
                           child: Image.asset(
                             !diseases[index].isHealthy
-                                ? 'assets/icon/leaf-virus.png'
+                                ? 'assets/icon/leaf-sick.png'
                                 : 'assets/icon/leaf-healthy.png',
                             width: 40,
                             // color: !diseases[index].isHealthy ? Colors.red : null,
@@ -1408,11 +1409,14 @@ class _ScannerScreenState extends State<ScannerScreen>
               // Bottom Action Button
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: AppButton(
-                  text: 'Close',
-                  onPressed: () => Navigator.pop(context),
-                  isPrimary: false,
-                  isTonal: true,
+                child: Opacity(
+                  opacity: .85,
+                  child: AppButton(
+                    text: 'Close',
+                    onPressed: () => Navigator.pop(context),
+                    isPrimary: true,
+                    isTonal: false,
+                  ),
                 ),
               ),
             ],

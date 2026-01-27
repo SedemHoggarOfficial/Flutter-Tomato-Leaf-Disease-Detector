@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 /// Disease information database with causes and solutions
 enum DiseaseType { 
   virus('Viral Infection', Colors.orange, 'assets/icon/diseases/coronavirus.png', FontAwesomeIcons.virus), 
-  bacteria('Bacterial Infection', Colors.purple, 'assets/icon/diseases/bacteria (2).png', FontAwesomeIcons.bacterium), 
+  bacteria('Bacterial Infection', Colors.purpleAccent, 'assets/icon/diseases/bacteria (1).png', FontAwesomeIcons.bacterium), 
   fungus('Fungal Infection', Colors.lightGreen, 'assets/icon/diseases/mould.png', FontAwesomeIcons.spaghettiMonsterFlying), 
   pest('Pest Infestation', Colors.redAccent, 'assets/icon/diseases/pest.png', FontAwesomeIcons.spider), 
   healthy('Healthy', Colors.green, 'assets/icon/leaf-healthy.png', FontAwesomeIcons.leaf), 

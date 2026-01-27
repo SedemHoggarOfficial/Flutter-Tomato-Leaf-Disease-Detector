@@ -6,7 +6,6 @@ import 'package:flutter_tomato_leaf_disease_detector/screens/scanner_screen.dart
 import 'package:flutter_tomato_leaf_disease_detector/widgets/app_button.dart';
 import 'package:flutter_tomato_leaf_disease_detector/widgets/custom_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Professional welcome screen with clean white background
 class WelcomeScreen extends StatefulWidget {
@@ -137,19 +136,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     Text(
                       'LEAF GUARD',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.robotoSlab(
-                        fontSize: 34,
+                      // style: GoogleFonts.exo2(
+                      //   fontSize: 34,
+                      //   fontWeight: FontWeight.w900,
+                      //   color: theme.colorScheme.primary,
+                      // ),
+                      style: TextStyle(
+                        fontFamily: 'RobotoSlab',
+                        fontSize: 36,
                         fontWeight: FontWeight.w900,
                         color: theme.colorScheme.primary,
                       ),
-                      // style: TextStyle(
-                      //   fontFamily: 'RobotoSlab',
-                      //   fontSize: 36,
-                      //   fontWeight: FontWeight.w900,
-                      //   color: theme.colorScheme.primary,
-                      //   // letterSpacing: .4,
-                      //   height: 1.2,
-                      // ),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -207,7 +204,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     // Start Button
                     AppButton(
                       text: 'Start Scanning',
-                      icon: FontAwesomeIcons.camera,
+                      // icon: FontAwesomeIcons.camera,
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(

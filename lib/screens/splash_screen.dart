@@ -7,7 +7,6 @@ import 'package:flutter_tomato_leaf_disease_detector/core/app_constants.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
 import 'package:flutter_tomato_leaf_disease_detector/screens/welcome_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   final ThemeNotifier themeNotifier;
@@ -176,7 +175,7 @@ class _SplashScreenState extends State<SplashScreen>
                     animationValue: _flowController.value,
                     color: const Color(0xFF00E5FF), // Cyan "current" color
                     leafCount: 6,
-                    radius: 140,
+                    radius: AppConstants.splashScreenRadius,
                   ),
                   size: Size.infinite,
                 );
@@ -193,7 +192,7 @@ class _SplashScreenState extends State<SplashScreen>
               builder: (context, child) {
                 return Stack(
                   children: List.generate(6, (index) {
-                    return _buildLeaf(index, 6, 140, theme);
+                    return _buildLeaf(index, 6, AppConstants.splashScreenRadius, theme);
                   }),
                 );
               },
@@ -206,8 +205,8 @@ class _SplashScreenState extends State<SplashScreen>
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: Container(
-                    width: 120,
-                    height: 120,
+                    width: 70,
+                    height: 70,
                     decoration: BoxDecoration(
                       color: theme.scaffoldBackgroundColor,
                       shape: BoxShape.circle,
@@ -225,7 +224,7 @@ class _SplashScreenState extends State<SplashScreen>
         
             // 4. Scanner Movable Overlay
             // [Scanner code remains same]
-            _buildScanner(theme, 140),
+            _buildScanner(theme, AppConstants.splashScreenRadius),
         
             // 5. Text Titles
             _buildText(theme),
@@ -278,7 +277,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _buildText(ThemeData theme) {
     return Positioned(
-      bottom: 80,
+      bottom: 27,
       left: 0,
       right: 0,
       child: FadeTransition(
@@ -287,12 +286,11 @@ class _SplashScreenState extends State<SplashScreen>
           children: [
             Text(
               'Leaf Guard',
-              style: GoogleFonts.montserrat(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+              style: TextStyle(
+                fontFamily: 'RobotoSlab',
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
                 color: theme.colorScheme.primary,
-                letterSpacing: 1.2,
-                height: 1.2,
               ),
             ),
           ],
@@ -327,13 +325,12 @@ class _SplashScreenState extends State<SplashScreen>
           child: Transform.scale(
             scale: scaleFactor,
             child: Transform.rotate(
-              angle: angle + math.pi / 2,
+              angle: 0,
               child: Image.asset(
                 isSick
-                    ? 'assets/icon/leaf-virus.png'
+                    ? 'assets/icon/leaf-sick.png'
                     : 'assets/icon/leaf-healthy.png',
-                width: 35,
-                height: 35,
+                width: 28,
                 fit: BoxFit.contain,
               ),
             ),

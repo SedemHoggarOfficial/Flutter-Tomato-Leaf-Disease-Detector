@@ -37,30 +37,6 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: Oxanium
-      fonts:
-        - asset: assets/fonts/Oxanium-VariableFont_wght.ttf
-
-    - family: Bungee
-      fonts:
-        - asset: assets/fonts/Bungee-Regular.ttf
-
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-VariableFont_wdth,wght.ttf
-
-    - family: RobotoFlex
-      fonts:
-        - asset: assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf
-
-    - family: RobotoMono
-      fonts:
-        - asset: assets/fonts/RobotoMono-VariableFont_wght.ttf
-
-    - family: RobotoSerif
-      fonts:
-        - asset: assets/fonts/RobotoSerif-VariableFont_GRAD,opsz,wdth,wght.ttf
-
     - family: RobotoSlab
       fonts:
         - asset: assets/fonts/RobotoSlab-VariableFont_wght.ttf
