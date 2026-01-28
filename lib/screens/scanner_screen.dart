@@ -822,7 +822,7 @@ class _ScannerScreenState extends State<ScannerScreen>
     final diseases = DiseaseInfo.allDiseases.toList();
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    // final isDark = theme.brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -895,17 +895,14 @@ class _ScannerScreenState extends State<ScannerScreen>
                           ),
                           shape: BoxShape.circle,
                         ),
-                        child: Opacity(
-                          opacity: isDark ? 0.7 : 1,
-                          child: Image.asset(
-                            !diseases[index].isHealthy
-                                ? 'assets/icon/leaf-sick.png'
-                                : 'assets/icon/leaf-healthy.png',
-                            width: 40,
-                            // color: !diseases[index].isHealthy ? Colors.red : null,
-                            colorBlendMode: BlendMode.srcIn,
-                            fit: BoxFit.contain,
-                          ),
+                        child: Image.asset(
+                          !diseases[index].isHealthy
+                              ? 'assets/icon/leaf-sick.png'
+                              : 'assets/icon/leaf-healthy.png',
+                          width: 40,
+                          // color: !diseases[index].isHealthy ? Colors.red : null,
+                          colorBlendMode: BlendMode.srcIn,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -1293,7 +1290,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                                     ? Colors.grey[300]
                                     : Colors.grey[700],
                                 height: 1.6,
-                                fontWeight: FontWeight.w500
+                                // fontWeight: FontWeight.w400
                               ),
                             ),
                           ],
@@ -1389,7 +1386,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                                                       ? Colors.grey[300]
                                                       : Colors.grey[700],
                                                   height: 1.4,
-                                                  fontWeight: FontWeight.w500
+                                                  // fontWeight: FontWeight.w500
                                                 ),
                                           ),
                                         ),

@@ -74,7 +74,11 @@ class _ResultScreenState extends State<ResultScreen>
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent
+          systemStatusBarContrastEnforced: false,
+          statusBarColor: theme.scaffoldBackgroundColor,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
         ),
         sized: false,
         child: CustomScrollView(
@@ -117,8 +121,8 @@ class _ResultScreenState extends State<ResultScreen>
                     // Status badge at bottom
                     Positioned(
                       bottom: 16,
-                      left: 24,
-                      right: 24,
+                      left: 16,
+                      right: 16,
                       child: Row(
                         children: [
                           Container(
@@ -221,7 +225,7 @@ class _ResultScreenState extends State<ResultScreen>
                 child: SlideTransition(
                   position: _slideAnimation,
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -231,75 +235,89 @@ class _ResultScreenState extends State<ResultScreen>
                         const SizedBox(height: 32),
         
                         // Quick Actions Header
-                        Text(
-                          'What would you like to do?',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-        
-                        const SizedBox(height: 16),
-        
-                        // Action buttons
-                        AppButton(
-                          text: 'Scan Another Plant',
-                          icon: FontAwesomeIcons.camera,
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-        
-                        const SizedBox(height: 12),
-        
-                        AppButton(
-                          text: 'Back to Home',
-                          //icon: FontAwesomeIcons.chevronLeft,
-                          isPrimary: false,
-                          isTonal: true,
-                          onPressed: () {
-                            Navigator.of(
-                              context,
-                            ).popUntil((route) => route.isFirst);
-                          },
-                        ),
-        
-                        const SizedBox(height: 32),
-        
-                        // Disclaimer
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: isDark ? Color.fromARGB(255, 206, 127, 8) : Color(0XFFFF9800),
-                            borderRadius: BorderRadius.circular(
-                              AppConstants.radius3xl,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: theme.cardTheme.color,
+                              borderRadius: BorderRadius.circular(AppConstants.radius3xl),
                             ),
-                            border: Border.all(
-                              width: 3,
-                              color: Colors.amberAccent.withValues(alpha: 0.3),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.circleInfo,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  'This is an AI-powered analysis. For accurate diagnosis, please consult with an agricultural expert.',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: Colors.white,
-                                    height: 1.4,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  'What would you like to do?',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 16),
+                                        
+                                // Action buttons
+                                AppButton(
+                                  text: 'Scan Another Plant',
+                                  // icon: FontAwesomeIcons.camera,
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                                        
+                                const SizedBox(height: 12),
+                                        
+                                AppButton(
+                                  text: 'Back to Home',
+                                  //icon: FontAwesomeIcons.chevronLeft,
+                                  isPrimary: false,
+                                  isTonal: true,
+                                  onPressed: () {
+                                    Navigator.of(
+                                      context,
+                                    ).popUntil((route) => route.isFirst);
+                                  },
+                                ),
+                                        
+                                const SizedBox(height: 32),
+                                        
+                                // Disclaimer
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: isDark ? Color.fromARGB(255, 206, 127, 8) : Color(0XFFFF9800),
+                                    borderRadius: BorderRadius.circular(
+                                      AppConstants.radius3xl,
+                                    ),
+                                    border: Border.all(
+                                      width: 3,
+                                      color: Colors.amberAccent.withValues(alpha: 0.3),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.circleInfo,
+                                        size: 16,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          'This is an AI-powered analysis. For accurate diagnosis, please consult with an agricultural expert.',
+                                          style: theme.textTheme.bodySmall?.copyWith(
+                                            color: Colors.white,
+                                            height: 1.4,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-        
                         const SizedBox(height: 24),
                       ],
                     ),
