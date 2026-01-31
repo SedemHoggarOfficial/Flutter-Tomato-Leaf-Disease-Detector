@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_theme.dart';
+import 'package:flutter_tomato_leaf_disease_detector/core/global_model_manager.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
-
 import 'package:flutter_tomato_leaf_disease_detector/screens/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -27,6 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     _themeNotifier.removeListener(_onThemeChanged);
+    // Dispose of global models when app closes
+    GlobalModelManager().dispose();
     super.dispose();
   }
 
@@ -43,6 +46,7 @@ class _MyAppState extends State<MyApp> {
       darkTheme: AppTheme.darkTheme,
       themeMode: _themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: SplashScreen(themeNotifier: _themeNotifier),
+      // home: Test(),
     );
   }
 }

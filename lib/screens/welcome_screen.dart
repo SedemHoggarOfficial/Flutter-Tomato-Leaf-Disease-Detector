@@ -150,7 +150,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Tomato Leaf Plant Disease Detector',
+                      'Tomato Plant Leaf Disease Detector',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,

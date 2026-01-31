@@ -1,194 +1,270 @@
 <div align="center">
 
-#Leaf Guard - Flutter Poultry Calculator
+# 🍅 Tomato Leaf Disease Detector
 
-**Your Digital Companion for Intelligent Poultry Farming Calculations**
+**AI-Powered Plant Disease Detection using TensorFlow Lite and Flutter**
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.10+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
 [![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
+[![TensorFlow Lite](https://img.shields.io/badge/TensorFlow%20Lite-Latest-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/lite)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 <br/>
-
-<!-- <video width="400" controls>
-  <source src="screenshots/video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video> -->
 
 </div>
 
 ---
 
-## 📱 Screenshots
+## Overview
 
-<p align="center">
-  <img src="screenshots/IMG6.PNG" width="250" alt="Welcome Screen"/>
-  <img src="screenshots/IMG7.PNG" width="250" alt="Home Dashboard"/>
-  <img src="screenshots/IMG5.PNG" width="250" alt="Feed Cost Calculator"/>
-</p>
-<p align="center">
-  <img src="screenshots/IMG1.PNG" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/IMG2.PNG" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/IMG4.PNG" width="250" alt="Feed Cost Calculator"/>
-</p>
-<p align="center">
-  <img src="screenshots/IMG3.PNG" width="250" alt="Feed Cost Calculator"/>
-</p>
+Tomato Leaf Disease Detector is a mobile application that uses machine learning to identify diseases in tomato plants. The app leverages TensorFlow Lite models to analyze plant leaf images and provide instant disease detection with high accuracy.
+
+**Two-Stage Verification System:**
+
+1. **Stage 1 - Verification Model** - Confirms if the image contains a tomato leaf
+2. **Stage 2 - Disease Detection Model** - Identifies specific diseases if verified as a tomato leaf
 
 ---
 
-## ✨ Features
+## Features
 
-PoultryPal is a comprehensive poultry farm management calculator that helps farmers make data-driven decisions. The app includes:
+### AI-Powered Disease Detection
 
-### 🧮 Feed Cost Calculator
-- Calculate total feed costs based on flock size, duration, and feed types
-- Support for multiple poultry types (Broilers, Layers, etc.)
-- Customizable feed pricing with Ghana Cedi (GH₵) currency support
-- Period-based calculations with detailed breakdowns
+- Two-Stage Verification - First verifies tomato leaf presence, then detects diseases
+- Real-time Analysis - Instant disease detection from camera or gallery images
+- High Accuracy - Powered by optimized TensorFlow Lite models
+- Confidence Scores - Display confidence percentages for predictions
 
-### 💧 Water Requirements Calculator
-- Calculate daily water needs based on bird count and age
-- Temperature-adjusted recommendations
-- Daily and period-based consumption estimates
+### Image Input Options
 
-### 🌾 Feed Requirements Calculator
-- Determine daily feed needs in grams or kilograms
-- Age-appropriate feeding schedules
-- Support for different poultry breeds and growth stages
+- Camera Capture - Take photos directly from your device camera
+- Gallery Selection - Choose images from your device storage
+- Image Preprocessing - Automatic image optimization and resizing
 
-### 🏠 Housing Requirements Calculator
-- Calculate optimal space requirements for your flock
-- Equipment recommendations (feeders, drinkers, etc.)
-- Ventilation and lighting guidelines
+### Modern User Interface
 
-### 💊 Drug Dosage Calculator
-- Calculate accurate medication dosages for your flock
-- Support for various medication types and concentrations
-- Weight-based and water-based dosing options
+- Material Design 3 - Clean, intuitive, and professional interface
+- Dark & Light Themes - Toggle between themes with persistent preferences
+- Smooth Animations - Professional animations and transitions
+- Professional Splash Screen - Elegant loading experience with animated visuals
 
----
+### Performance Optimized
 
-## 🎨 Design Highlights
+- Background Model Loading - Models load in background isolates without blocking UI
+- Parallel Processing - Both models initialize simultaneously
+- Efficient Preprocessing - Image preprocessing in isolated threads
+- Minimal Memory Footprint - Optimized for mobile devices
 
-- **Modern Material Design 3** - Clean and intuitive user interface
-- **Dark & Light Themes** - Toggle between themes with persistent preferences
-- **Smooth Animations** - Delightful micro-interactions and transitions
-- **Responsive Layout** - Optimized for various screen sizes
-- **Premium Aesthetics** - Gradient backgrounds, glassmorphism effects, and polished UI components
+### Data Persistence
+
+- Theme Preferences - Save user's theme selection locally
+- Session Management - Persistent app state across sessions
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **Flutter 3.10+** | Cross-platform UI framework |
-| **Dart 3.0+** | Programming language |
-| **Riverpod** | State management |
-| **Shared Preferences** | Local data persistence |
-| **Google Fonts** | Typography (Inter, Roboto) |
-| **Font Awesome** | Iconography |
-| **Device Preview** | Cross-device testing |
+| Technology             | Purpose                              |
+| ---------------------- | ------------------------------------ |
+| Flutter 3.10.7         | Cross-platform mobile UI framework   |
+| Dart 3.0+              | Programming language                 |
+| TensorFlow Lite 0.12.1 | On-device machine learning inference |
+| Image Picker           | Camera and gallery image selection   |
+| File Picker            | File system access                   |
+| Shared Preferences     | Local data persistence               |
+| Google Fonts           | Typography                           |
+| Font Awesome Flutter   | Iconography                          |
+| Image Processing       | Image manipulation and preprocessing |
 
 ---
 
-## 🚀 Getting Started
+## Architecture
+
+### Model Loading Strategy
+
+- Global Singleton Pattern - `GlobalModelManager` manages all models globally
+- Isolate-Based Loading - Models initialize in background isolates for non-blocking UI
+- Parallel Initialization - Both verification and disease detection models load simultaneously
+- Main Thread Binding - Asset loading happens in main thread, interpretation in isolates
+
+### Service Layer
+
+- MLService - High-level prediction interface with two-stage verification
+- ModelIsolateService - Low-level isolate management and model initialization
+- ImageHelper - Image preprocessing and normalization
+
+### Data Flow
+
+```
+User selects image
+    ↓
+ImageHelper preprocesses (in isolate)
+    ↓
+Stage 1: Verification Model runs
+    ↓
+If tomato leaf: Stage 2: Disease detection runs
+    ↓
+PredictionResult returned with confidence and status
+```
+
+---
+
+## Project Structure
+
+```
+lib/
+├── main.dart                          # App entry point
+├── core/
+│   ├── global_model_manager.dart      # Global ML model lifecycle management
+│   └── theme_notifier.dart            # Theme state management
+├── models/
+│   ├── prediction_result.dart         # Prediction data model
+│   └── preprocess_params.dart         # Image preprocessing parameters
+├── screens/
+│   ├── splash_screen.dart             # Animated splash with model loading
+│   ├── welcome_screen.dart            # Main welcome/home screen
+│   ├── camera_screen.dart             # Camera capture interface
+│   └── result_screen.dart             # Disease detection results display
+├── services/
+│   ├── ml_service.dart                # Two-stage prediction service
+│   ├── model_isolate_service.dart     # Isolate-based model initialization
+│   └── image_helper.dart              # Image preprocessing utilities
+└── widgets/
+    ├── loading_spinner.dart           # Reusable loading indicator
+    └── custom_widgets.dart            # Shared UI components
+```
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Flutter SDK 3.10 or higher
-- Dart SDK 3.0 or higher
-- Android Studio / VS Code with Flutter extensions
+- Flutter SDK 3.10.7 or higher
+- Dart 3.0 or higher
+- Android SDK (for Android) or Xcode (for iOS)
 
 ### Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/SedemHoggarOfficial/Flutter-Poultry-Calculator.git
-   cd Flutter-Poultry-Calculator
-   ```
-
-2. **Install dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run the app**
-   ```bash
-   flutter run
-   ```
-
-### Build for Production
 
 ```bash
-# Android APK
-flutter build apk --release
+git clone <repository-url>
+cd flutter_tomato_leaf_disease_detector
+```
 
-# Android App Bundle
-flutter build appbundle --release
+2. **Install dependencies**
 
-# iOS
-flutter build ios --release
+```bash
+flutter pub get
+```
 
-# Web
-flutter build web --release
+3. **Configure Android (if building for Android)**
+
+```bash
+cd android
+./gradlew clean
+cd ..
+```
+
+4. **Run the app**
+
+```bash
+flutter run
+```
+
+For release builds:
+
+```bash
+flutter run --release
 ```
 
 ---
 
-## 📁 Project Structure
+## Machine Learning Models
+
+### Models Included
+
+- tomato_or_not_model.tflite - Verification model (224x224 input)
+  - Verifies if image contains a tomato leaf
+  - Labels: "Tomato Leaf", "Not Tomato Leaf"
+
+- tomato_leaf_disease_model.tflite - Disease detection model (224x224 input)
+  - Identifies specific diseases in tomato leaves
+  - Supports multiple disease classes
+
+### Model Location
 
 ```
-lib/
-├── core/
-│   └── theme/           # App theming (colors, typography, theme providers)
-├── data/
-│   ├── jsons/           # JSON data files
-│   └── schedules/       # Feed schedules and period data
-├── models/              # Data models
-├── screens/             # UI screens
-│   ├── home_page.dart
-│   ├── welcome_screen.dart
-│   ├── feed_cost_calculator.dart
-│   ├── feed_requirement_calculator.dart
-│   ├── water_requirement_calculator.dart
-│   ├── housing_requirements_screen.dart
-│   └── drug_dosage_calculator.dart
-├── services/            # Business logic services
-├── widgets/             # Reusable UI components
-└── main.dart            # App entry point
+assets/models/
+├── tomato_or_not_model.tflite
+├── tomato_or_not_model_labels.txt
+├── tomato_leaf_disease_model.tflite
+└── tomato_leaf_disease_model_labels.txt
 ```
 
 ---
 
-## 🤝 Contributing
+## Model Loading Flow
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. App Startup → Splash screen initiates model loading
+2. Parallel Loading → Both models load simultaneously in background isolates
+3. Main Thread Binding → Assets loaded in main thread (requires Flutter binding)
+4. Isolate Processing → Model bytes passed to isolates for interpreter creation
+5. Ready State → Models cached globally and reused for all predictions
+6. Navigation → After 5-second minimum display, app navigates to welcome screen
 
 ---
 
-## 📄 License
+## Usage
+
+1. **Launch App** - App loads with animated splash screen
+2. **Select Image** - Tap camera icon to capture or select from gallery
+3. **Analysis** - App performs two-stage verification and disease detection
+4. **Results** - View disease name, confidence, and disease-specific information
+5. **Save** - Option to save results locally
+
+---
+
+## Privacy & Security
+
+- **On-Device Processing** - All inference happens locally, no data sent to servers
+- **No Permissions Needed** - Only requires camera/storage access for selected images
+- **No Data Collection** - User images are not stored or transmitted
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
-**Sedem Hoggar**
-
-- GitHub: [@SedemHoggarOfficial](https://github.com/SedemHoggarOfficial)
+Developed using Flutter and TensorFlow Lite
 
 ---
 
-<div align="center">
+## Acknowledgments
+
+- TensorFlow Lite for efficient on-device machine learning
+- Flutter community for excellent documentation and tools
+- Plant disease research community for model training datasets
+
+---
+
+## Support
+
+For questions, issues, or suggestions, please open an issue on the repository.
+
+**Happy Farming!**
 
 ### ⭐ Star this repository if you find it helpful!
 

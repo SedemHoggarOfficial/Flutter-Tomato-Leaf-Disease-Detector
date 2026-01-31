@@ -3,20 +3,61 @@ import 'package:flutter_tomato_leaf_disease_detector/core/app_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// Disease information database with causes and solutions
-enum DiseaseType { 
-  virus('Viral Infection', Colors.orange, 'assets/icon/diseases/coronavirus.png', FontAwesomeIcons.virus), 
-  bacteria('Bacterial Infection', Colors.purpleAccent, 'assets/icon/diseases/bacteria (1).png', FontAwesomeIcons.bacterium), 
-  fungus('Fungal Infection', Colors.lightGreen, 'assets/icon/diseases/mould.png', FontAwesomeIcons.spaghettiMonsterFlying), 
-  pest('Pest Infestation', Colors.redAccent, 'assets/icon/diseases/pest.png', FontAwesomeIcons.spider), 
-  healthy('Healthy', Colors.green, 'assets/icon/leaf-healthy.png', FontAwesomeIcons.leaf), 
-  other('Unknown', Colors.grey, 'assets/icon/diseases/allergies.png', FontAwesomeIcons.circleQuestion);
+enum DiseaseType {
+  virus(
+    'Viral Infection',
+    Colors.orange,
+    'assets/icon/diseases/coronavirus.png',
+    FontAwesomeIcons.virus,
+  ),
+  bacteria(
+    'Bacterial Infection',
+    Colors.purpleAccent,
+    'assets/icon/diseases/bacteria (1).png',
+    FontAwesomeIcons.bacterium,
+  ),
+  fungus(
+    'Fungal Infection',
+    Colors.lightGreen,
+    'assets/icon/diseases/allergies.png',
+    FontAwesomeIcons.spaghettiMonsterFlying,
+  ),
+  pest(
+    'Pest Infestation',
+    Colors.redAccent,
+    'assets/icon/diseases/pest.png',
+    FontAwesomeIcons.spider,
+  ),
+  healthy(
+    'Healthy',
+    Colors.green,
+    'assets/icon/leaf-healthy.png',
+    FontAwesomeIcons.leaf,
+  ),
+  invalid(
+    'Invalid Input',
+    Colors.blueGrey,
+    'assets/icon/research.png',
+    FontAwesomeIcons.triangleExclamation,
+  ),
+  other(
+    'Unknown',
+    Colors.grey,
+    'assets/icon/question (1).png',
+    FontAwesomeIcons.circleQuestion,
+  );
 
   final String typeName;
   final Color typeColor;
   final String iconPath;
   final IconData typeIcon;
 
-  const DiseaseType(this.typeName, this.typeColor, this.iconPath, this.typeIcon);
+  const DiseaseType(
+    this.typeName,
+    this.typeColor,
+    this.iconPath,
+    this.typeIcon,
+  );
 }
 
 class DiseaseInfo {
@@ -26,6 +67,8 @@ class DiseaseInfo {
   final List<String> solutions;
   final Color backgroundColor;
   final bool isHealthy;
+  final bool isOther;
+  final bool isInvalid;
   final DiseaseType type;
 
   const DiseaseInfo({
@@ -36,6 +79,8 @@ class DiseaseInfo {
     required this.type,
     this.backgroundColor = AppColors.cardLight,
     this.isHealthy = false,
+    this.isOther = false,
+    this.isInvalid = false,
   });
 
   static DiseaseInfo? getInfo(String label) {
@@ -235,6 +280,46 @@ class DiseaseInfo {
         'Disinfect tools with 10% bleach solution',
         'Use certified virus-free seeds',
         'Avoid smoking near plants',
+      ],
+    ),
+    'unknown_disease': DiseaseInfo(
+      name: 'Unknown or Unrecognized Condition',
+      type: DiseaseType.other,
+      isOther: true,
+      description:
+          'The model was unable to confidently identify a specific disease or condition in the provided image. This may indicate a rare disease, a combination of conditions, environmental stress not directly caused by pathogens, or a crop that is not a tomato leaf. For accurate diagnosis, we recommend consulting with a local agricultural extension service or plant pathologist.',
+      causes: [
+        'Rare or undocumented disease',
+        'Multiple simultaneous conditions',
+        'Environmental stress (nutrient deficiency, water stress, temperature extremes)',
+        'Image quality or lighting issues affecting analysis',
+      ],
+      solutions: [
+        'Take a clearer, well-lit photo of the affected area',
+        'Try scanning the same leaf from different angles',
+        'Consult with a local agricultural expert',
+        'Monitor the plant for disease progression',
+        'Ensure proper watering, nutrition, and environmental conditions',
+      ],
+    ),
+    'not_a_tomato_leaf': DiseaseInfo(
+      name: 'Not a Tomato Leaf',
+      type: DiseaseType.invalid,
+      isInvalid: true,
+      description:
+          'The verification model has determined that the provided image does not contain a tomato leaf. This application is specifically designed to detect diseases in tomato plants only. Please capture an image of an actual tomato leaf and try again. Ensure the leaf is clearly visible and well-lit.',
+      causes: [
+        'Image does not show a tomato leaf',
+        'Image shows a different plant species',
+        'Image is blurry or poorly lit',
+        'Image shows only soil, fruit, or other non-leaf parts',
+      ],
+      solutions: [
+        'Take a clear photo of a tomato leaf',
+        'Ensure adequate lighting when capturing the image',
+        'Keep the leaf in focus and fill most of the frame',
+        'Avoid shadows or extreme lighting conditions',
+        'Try capturing from different angles if the first attempt fails',
       ],
     ),
   };

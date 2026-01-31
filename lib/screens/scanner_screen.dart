@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_colors.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/app_constants.dart';
+import 'package:flutter_tomato_leaf_disease_detector/core/global_model_manager.dart';
 import 'package:flutter_tomato_leaf_disease_detector/core/theme_notifier.dart';
 import 'package:flutter_tomato_leaf_disease_detector/data/disease_info.dart';
 import 'package:flutter_tomato_leaf_disease_detector/models/prediction_result.dart';
@@ -35,7 +36,6 @@ class _ScannerScreenState extends State<ScannerScreen>
   late AnimationController _pulseController;
 
   File? _selectedImage;
-  bool _isModelLoaded = false;
   bool _isAnalyzing = false;
 
   bool _up = true;
@@ -47,7 +47,7 @@ class _ScannerScreenState extends State<ScannerScreen>
   @override
   void initState() {
     super.initState();
-    _initializeModel();
+    // Models are now pre-loaded in splash screen, no need to load here
     _loadLastResult();
 
     _pulseController = AnimationController(
@@ -64,16 +64,9 @@ class _ScannerScreenState extends State<ScannerScreen>
     }
   }
 
-  Future<void> _initializeModel() async {
-    await _mlService.initialize();
-    if (mounted) {
-      setState(() => _isModelLoaded = true);
-    }
-  }
-
   @override
   void dispose() {
-    _mlService.dispose();
+    // Do NOT dispose MLService as it uses the global manager
     _pulseController.dispose();
     super.dispose();
   }
@@ -89,7 +82,15 @@ class _ScannerScreenState extends State<ScannerScreen>
   }
 
   Future<void> _runInference() async {
-    if (_selectedImage == null || !_isModelLoaded) return;
+    if (_selectedImage == null || !GlobalModelManager().isInitialized) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('AI models are still loading. Please wait...'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
 
     setState(() => _isAnalyzing = true);
 
@@ -149,14 +150,19 @@ class _ScannerScreenState extends State<ScannerScreen>
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: CustomAppBar(themeNotifier: widget.themeNotifier, title: 'Leaf Guard'),
+      appBar: CustomAppBar(
+        themeNotifier: widget.themeNotifier,
+        title: 'Leaf Guard',
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           systemStatusBarContrastEnforced: false,
           statusBarColor: theme.scaffoldBackgroundColor,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           systemNavigationBarColor: theme.scaffoldBackgroundColor,
-          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: isDark
+              ? Brightness.light
+              : Brightness.dark,
         ),
         sized: false,
         child: SafeArea(
@@ -240,15 +246,14 @@ class _ScannerScreenState extends State<ScannerScreen>
                           'Analyze your crops instantly for\naccurate disease detection',
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.textTheme.bodyMedium?.color?.withValues(
-                              alpha: 0.6,
-                            ),
+                            color: theme.textTheme.bodyMedium?.color
+                                ?.withValues(alpha: 0.6),
                             height: 1.5,
                           ),
                         ),
-        
+
                         const SizedBox(height: 24),
-        
+
                         // Scroll Indicator
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -299,19 +304,19 @@ class _ScannerScreenState extends State<ScannerScreen>
                       ],
                     ),
                   ),
-        
+
                   const SizedBox(height: 32),
-        
+
                   // Supported Diseases Section
                   _buildSupportedDiseases(context),
-        
+
                   const SizedBox(height: 32),
-        
+
                   // Detailed Guide Section
                   _buildDetailedGuide(context),
-        
+
                   const SizedBox(height: 32),
-        
+
                   // Last Result Section (if available)
                   if (_lastResult != null &&
                       !_isAnalyzing &&
@@ -327,7 +332,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                     _buildLastResultSection(context),
                     const SizedBox(height: 32),
                   ],
-        
+
                   // Main Scanner Area (Inline Workflow)
                   Text(
                     _isAnalyzing ? 'Analyzing Crop...' : 'Start Diagnosis',
@@ -337,7 +342,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                     ),
                   ),
                   const SizedBox(height: 16),
-        
+
                   // Switch between Empty, Preview, and Analyzing states
                   _buildScannerArea(context),
                 ],
@@ -683,7 +688,7 @@ class _ScannerScreenState extends State<ScannerScreen>
           const SizedBox(height: 32),
 
           // Action Buttons with Icons and Description
-          if (!_isModelLoaded)
+          if (!GlobalModelManager().isInitialized)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -699,7 +704,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    "Loading AI Model...",
+                    "Loading AI Models...",
                     style: theme.textTheme.bodyMedium,
                   ),
                 ],
@@ -896,11 +901,19 @@ class _ScannerScreenState extends State<ScannerScreen>
                           shape: BoxShape.circle,
                         ),
                         child: Image.asset(
-                          !diseases[index].isHealthy
-                              ? 'assets/icon/leaf-sick.png'
-                              : 'assets/icon/leaf-healthy.png',
+                          diseases[index].isHealthy
+                              ? 'assets/icon/leaf-healthy.png'
+                              : diseases[index].isOther
+                              ? 'assets/icon/dont-know.png'
+                              : diseases[index].isInvalid
+                              ? 'assets/icon/hypothesis.png'
+                              : 'assets/icon/leaf-sick.png',
                           width: 40,
-                          // color: !diseases[index].isHealthy ? Colors.red : null,
+                          color: diseases[index].isOther
+                              ? theme.colorScheme.primary
+                              : diseases[index].isInvalid
+                              ? theme.colorScheme.primary
+                              : null,
                           colorBlendMode: BlendMode.srcIn,
                           fit: BoxFit.contain,
                         ),
@@ -1144,11 +1157,17 @@ class _ScannerScreenState extends State<ScannerScreen>
             typeName = DiseaseType.healthy.typeName;
             typeImage = DiseaseType.healthy.iconPath;
             break;
-          default:
-            typeIcon = FontAwesomeIcons.circleQuestion;
+          case DiseaseType.other:
+            typeIcon = FontAwesomeIcons.heart;
             typeColor = DiseaseType.other.typeColor;
             typeName = DiseaseType.other.typeName;
             typeImage = DiseaseType.other.iconPath;
+            break;
+          default:
+            typeIcon = FontAwesomeIcons.circleQuestion;
+            typeColor = DiseaseType.invalid.typeColor;
+            typeName = DiseaseType.invalid.typeName;
+            typeImage = DiseaseType.invalid.iconPath;
         }
 
         return Container(
@@ -1193,6 +1212,12 @@ class _ScannerScreenState extends State<ScannerScreen>
                             child: Image.asset(
                               typeImage,
                               width: 42,
+                              color: DiseaseType.other == disease.type
+                                  ? theme.colorScheme.primary
+                                  : DiseaseType.invalid == disease.type
+                                  ? theme.colorScheme.primary
+                                  : null,
+                              colorBlendMode: BlendMode.srcIn,
                             ),
                             // child: FaIcon(typeIcon, size: 32, color: typeColor),
                           ),
@@ -1325,14 +1350,19 @@ class _ScannerScreenState extends State<ScannerScreen>
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: FaIcon(
-                                      (disease.type == DiseaseType.healthy) ? FontAwesomeIcons.marker : FontAwesomeIcons.triangleExclamation,
+                                      (disease.type == DiseaseType.healthy)
+                                          ? FontAwesomeIcons.marker
+                                          : FontAwesomeIcons
+                                                .triangleExclamation,
                                       size: 14,
                                       color: typeColor,
                                     ),
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    (disease.type == DiseaseType.healthy) ? 'Helpful Recommendations' : 'Common Causes',
+                                    (disease.type == DiseaseType.healthy)
+                                        ? 'Helpful Recommendations'
+                                        : 'Common Causes',
                                     style: theme.textTheme.titleMedium
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),

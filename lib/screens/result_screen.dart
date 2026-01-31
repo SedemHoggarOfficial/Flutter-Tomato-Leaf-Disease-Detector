@@ -70,6 +70,7 @@ class _ResultScreenState extends State<ResultScreen>
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final isHealthy = widget.result.isHealthy;
+    final isValidTomatoLeaf = widget.result.isValidTomatoLeaf;
 
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -78,7 +79,9 @@ class _ResultScreenState extends State<ResultScreen>
           statusBarColor: theme.scaffoldBackgroundColor,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           systemNavigationBarColor: theme.scaffoldBackgroundColor,
-          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: isDark
+              ? Brightness.light
+              : Brightness.dark,
         ),
         sized: false,
         child: CustomScrollView(
@@ -88,7 +91,9 @@ class _ResultScreenState extends State<ResultScreen>
               expandedHeight: 280,
               pinned: true,
               stretch: true,
-              backgroundColor: isHealthy
+              backgroundColor: !isValidTomatoLeaf
+                  ? const Color(0xFF1976D2)
+                  : isHealthy
                   ? theme.colorScheme.primary
                   : widget.result.isUncertain
                   ? const Color(0xFF616161)
@@ -131,8 +136,17 @@ class _ResultScreenState extends State<ResultScreen>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: isHealthy
-                                  ? isDark ? theme.colorScheme.onPrimary.withValues(alpha: 0.9) : theme.colorScheme.primary.withValues(alpha: 0.9)
+                              color: !isValidTomatoLeaf
+                                  ? const Color(
+                                      0xFF1976D2,
+                                    ).withValues(alpha: 0.9)
+                                  : isHealthy
+                                  ? (isDark
+                                        ? theme.colorScheme.onPrimary
+                                              .withValues(alpha: 0.9)
+                                        : theme.colorScheme.primary.withValues(
+                                            alpha: 0.9,
+                                          ))
                                   : widget.result.isUncertain
                                   ? Colors.grey.withValues(alpha: 0.9)
                                   : Colors.red.withValues(alpha: 0.9),
@@ -157,7 +171,7 @@ class _ResultScreenState extends State<ResultScreen>
                                       ? FontAwesomeIcons.circleQuestion
                                       : FontAwesomeIcons.triangleExclamation,
                                   size: 12,
-                                  color: theme.colorScheme.onError
+                                  color: theme.colorScheme.onError,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
@@ -217,7 +231,7 @@ class _ResultScreenState extends State<ResultScreen>
                 ),
               ),
             ),
-        
+
             // Content
             SliverToBoxAdapter(
               child: FadeTransition(
@@ -231,9 +245,9 @@ class _ResultScreenState extends State<ResultScreen>
                       children: [
                         // Result card
                         ResultCard(result: widget.result),
-        
+
                         const SizedBox(height: 32),
-        
+
                         // Quick Actions Header
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -241,7 +255,9 @@ class _ResultScreenState extends State<ResultScreen>
                             padding: const EdgeInsets.all(24),
                             decoration: BoxDecoration(
                               color: theme.cardTheme.color,
-                              borderRadius: BorderRadius.circular(AppConstants.radius3xl),
+                              borderRadius: BorderRadius.circular(
+                                AppConstants.radius3xl,
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,16 +270,16 @@ class _ResultScreenState extends State<ResultScreen>
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                        
+
                                 // Action buttons
                                 AppButton(
                                   text: 'Scan Another Plant',
                                   // icon: FontAwesomeIcons.camera,
                                   onPressed: () => Navigator.of(context).pop(),
                                 ),
-                                        
+
                                 const SizedBox(height: 12),
-                                        
+
                                 AppButton(
                                   text: 'Back to Home',
                                   //icon: FontAwesomeIcons.chevronLeft,
@@ -275,24 +291,29 @@ class _ResultScreenState extends State<ResultScreen>
                                     ).popUntil((route) => route.isFirst);
                                   },
                                 ),
-                                        
+
                                 const SizedBox(height: 32),
-                                        
+
                                 // Disclaimer
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: isDark ? Color.fromARGB(255, 206, 127, 8) : Color(0XFFFF9800),
+                                    color: isDark
+                                        ? Color.fromARGB(255, 206, 127, 8)
+                                        : Color(0XFFFF9800),
                                     borderRadius: BorderRadius.circular(
                                       AppConstants.radius3xl,
                                     ),
                                     border: Border.all(
                                       width: 3,
-                                      color: Colors.amberAccent.withValues(alpha: 0.3),
+                                      color: Colors.amberAccent.withValues(
+                                        alpha: 0.3,
+                                      ),
                                     ),
                                   ),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       FaIcon(
                                         FontAwesomeIcons.circleInfo,
@@ -303,12 +324,13 @@ class _ResultScreenState extends State<ResultScreen>
                                       Expanded(
                                         child: Text(
                                           'This is an AI-powered analysis. For accurate diagnosis, please consult with an agricultural expert.',
-                                          style: theme.textTheme.bodySmall?.copyWith(
-                                            color: Colors.white,
-                                            height: 1.4,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold
-                                          ),
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                                color: Colors.white,
+                                                height: 1.4,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
                                       ),
                                     ],
