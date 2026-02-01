@@ -15,6 +15,33 @@
 
 ---
 
+## 📱 Screenshots
+
+<p align="center">
+  <img src="screenshots/welcome-dark.png" width="250" alt="welcome dark"/>
+  <img src="screenshots/scanner-dark.png" width="250" alt="Home Dashboard"/>
+  <img src="screenshots/welcome-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/scanner-light.png" width="250" alt="Feed Cost Calculator"/>
+</p>
+<p align="center">
+  <img src="screenshots/scanner2-dark.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/scanner3-dark.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/scanner2-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/scanner3-light.png" width="250" alt="Feed Cost Calculator"/>
+</p>
+<p align="center">
+  <img src="screenshots/scanner4-dark.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/result-dark.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/scanner4-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/result-light.png" width="250" alt="Feed Cost Calculator"/>
+</p>
+<p align="center">
+  <img src="screenshots/result1-dark.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/result1-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="screenshots/tiktok.png" width="250" alt="Feed Cost Calculator"/>
+</p>
+
+
 ## Overview
 
 Tomato Leaf Disease Detector is a mobile application that uses machine learning to identify diseases in tomato plants. The app leverages TensorFlow Lite models to analyze plant leaf images and provide instant disease detection with high accuracy.
