@@ -22,27 +22,28 @@
 </p>
 <p align="center">
   <img src="assets/screenshots/welcome-dark.png" width="250" alt="welcome dark"/>
-  <img src="assets/screenshots/scanner-dark.png" width="250" alt="scanner dark"/>
   <img src="assets/screenshots/welcome-light.png" width="250" alt="welcome light"/>
-  <img src="assets/screenshots/scanner-light.png" width="250" alt="welcome dark"/>
-</p>
-<p align="center">
-  <img src="assets/screenshots/scanner2-dark.png" width="250" alt="scanner 2 dark"/>
-  <img src="assets/screenshots/scanner3-dark.png" width="250" alt="scanner 3 dark"/>
-  <img src="assets/screenshots/scanner2-light.png" width="250" alt="scanner 2 light"/>
-  <img src="assets/screenshots/scanner3-light.png" width="250" alt="scanner 3 light"/>
-</p>
-<p align="center">
-  <img src="assets/screenshots/scanner4-dark.png" width="250" alt="scanner 4 dark"/>
-  <img src="assets/screenshots/result-dark.png" width="250" alt="result dark"/>
-  <img src="assets/screenshots/scanner4-light.png" width="250" alt="scanner light"/>
-  <img src="assets/screenshots/result-light.png" width="250" alt="result light"/>
-</p>
-<p align="center">
   <img src="assets/screenshots/result1-dark.png" width="250" alt="result1 dark"/>
+</p>
+<p align="center">
+  <img src="assets/screenshots/scanner-light.png" width="250" alt="welcome dark"/>
+  <img src="assets/screenshots/scanner-dark.png" width="250" alt="scanner dark"/>
   <img src="assets/screenshots/result1-light.png" width="250" alt="result1 light"/>
 </p>
-
+<p align="center">
+  <img src="assets/screenshots/scanner2-light.png" width="250" alt="scanner 2 light"/>
+  <img src="assets/screenshots/scanner2-dark.png" width="250" alt="scanner 2 dark"/>
+    <img src="assets/screenshots/scanner4-light.png" width="250" alt="scanner light"/>
+</p>
+<p align="center">
+  <img src="assets/screenshots/scanner3-dark.png" width="250" alt="scanner 3 dark"/>
+  <img src="assets/screenshots/scanner3-light.png" width="250" alt="scanner 3 light"/>
+  <img src="assets/screenshots/scanner4-dark.png" width="250" alt="scanner 4 dark"/>
+</p>
+<p align="center">
+  <img src="assets/screenshots/result-light.png" width="250" alt="result light"/>
+  <img src="assets/screenshots/result-dark.png" width="250" alt="result dark"/>
+</p>
 
 ## Overview
 
