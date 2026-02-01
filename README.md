@@ -18,6 +18,9 @@
 ## 📱 Screenshots
 
 <p align="center">
+  <img src="screenshots/main-card.png" width="1000" alt="Feed Cost Calculator"/>
+</p>
+<p align="center">
   <img src="screenshots/welcome-dark.png" width="250" alt="welcome dark"/>
   <img src="screenshots/scanner-dark.png" width="250" alt="Home Dashboard"/>
   <img src="screenshots/welcome-light.png" width="250" alt="Feed Cost Calculator"/>
@@ -38,7 +41,6 @@
 <p align="center">
   <img src="screenshots/result1-dark.png" width="250" alt="Feed Cost Calculator"/>
   <img src="screenshots/result1-light.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/tiktok.png" width="250" alt="Feed Cost Calculator"/>
 </p>
 
 
