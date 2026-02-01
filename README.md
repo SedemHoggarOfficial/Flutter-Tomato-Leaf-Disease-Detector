@@ -18,29 +18,29 @@
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="screenshots/main-card.png" width="1000" alt="Feed Cost Calculator"/>
+  <img src="assets/screenshots/main-card.png" width="1000" alt="main card"/>
 </p>
 <p align="center">
-  <img src="screenshots/welcome-dark.png" width="250" alt="welcome dark"/>
-  <img src="screenshots/scanner-dark.png" width="250" alt="Home Dashboard"/>
-  <img src="screenshots/welcome-light.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/scanner-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="assets/screenshots/welcome-dark.png" width="250" alt="welcome dark"/>
+  <img src="assets/screenshots/scanner-dark.png" width="250" alt="scanner dark"/>
+  <img src="assets/screenshots/welcome-light.png" width="250" alt="welcome light"/>
+  <img src="assets/screenshots/scanner-light.png" width="250" alt="welcome dark"/>
 </p>
 <p align="center">
-  <img src="screenshots/scanner2-dark.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/scanner3-dark.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/scanner2-light.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/scanner3-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="assets/screenshots/scanner2-dark.png" width="250" alt="scanner 2 dark"/>
+  <img src="assets/screenshots/scanner3-dark.png" width="250" alt="scanner 3 dark"/>
+  <img src="assets/screenshots/scanner2-light.png" width="250" alt="scanner 2 light"/>
+  <img src="assets/screenshots/scanner3-light.png" width="250" alt="scanner 3 light"/>
 </p>
 <p align="center">
-  <img src="screenshots/scanner4-dark.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/result-dark.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/scanner4-light.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/result-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="assets/screenshots/scanner4-dark.png" width="250" alt="scanner 4 dark"/>
+  <img src="assets/screenshots/result-dark.png" width="250" alt="result dark"/>
+  <img src="assets/screenshots/scanner4-light.png" width="250" alt="scanner light"/>
+  <img src="assets/screenshots/result-light.png" width="250" alt="result light"/>
 </p>
 <p align="center">
-  <img src="screenshots/result1-dark.png" width="250" alt="Feed Cost Calculator"/>
-  <img src="screenshots/result1-light.png" width="250" alt="Feed Cost Calculator"/>
+  <img src="assets/screenshots/result1-dark.png" width="250" alt="result1 dark"/>
+  <img src="assets/screenshots/result1-light.png" width="250" alt="result1 light"/>
 </p>
 
 
